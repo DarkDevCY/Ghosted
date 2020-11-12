@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  Form,
 } from 'react-native';
 
 import {
@@ -24,6 +25,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 const signIn: () => React$Node = (props) => {
+  const [username, setUsername] = useState({value: '', error: ''});
+  const [password, setPassword] = useState({value: '', error: ''});
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -31,19 +35,27 @@ const signIn: () => React$Node = (props) => {
         <View style={styles.firstBox}></View>
         <View style={styles.secondBox}></View>
         <View style={styles.centerForm}>
-          <TextInput style={styles.username} placeholder="username" />
-          <TextInput
-            style={styles.password}
-            secureTextEntry={true}
-            placeholder="password"
-            autoCompleteType="password"
-          />
+          <Form>
+            <TextInput
+              style={styles.username}
+              placeholder="username"
+              value={username.value}
+              onChangeText={(text) => setUsername({value: text, error: ''})}
+            />
+            <TextInput
+              style={styles.password}
+              secureTextEntry={true}
+              placeholder="password"
+              value={password.value}
+              onChangeText={(text) => setPassword({value: text, error: ''})}
+            />
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => props.navigation.navigate('Main')}>
-            <Text style={styles.signText}>Sign In</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => props.navigation.navigate('Main')}>
+              <Text style={styles.signText}>Sign In</Text>
+            </TouchableOpacity>
+          </Form>
         </View>
       </SafeAreaView>
     </>
