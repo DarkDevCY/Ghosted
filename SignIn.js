@@ -23,7 +23,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-const signIn: () => React$Node = () => {
+const signIn: () => React$Node = (props) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -39,7 +39,9 @@ const signIn: () => React$Node = () => {
             autoCompleteType="password"
           />
 
-          <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Main')}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => props.navigation.navigate('Main')}>
             <Text style={styles.signText}>Sign In</Text>
           </TouchableOpacity>
         </View>

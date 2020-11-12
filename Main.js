@@ -9,6 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  Button,
+  Image,
 } from 'react-native';
 
 import {
@@ -23,16 +25,15 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-const Main: () => React$Node = () => {
+const Main: () => React$Node = (props) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <View style={styles.centerForm}>
-          <TextInput style={styles.username} placeholder="username" />
-          <Button
-            title="Sign Out"
-            onPress={() => this.props.navigation.navigate('SignIn')}
+        <View style={styles.wrapperUser}>
+          <Image
+            style={styles.imageUser}
+            source={require('./icons/user-profile.png')}
           />
         </View>
       </SafeAreaView>
@@ -41,21 +42,10 @@ const Main: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
-  username: {
-    width: 300,
-    height: 50,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 4,
-    marginBottom: 10,
-    backgroundColor: 'white',
-    paddingLeft: 15,
-  },
-  centerForm: {
-    height: Dimensions.get('window').height,
-    justifyContent: 'center',
-    alignItems: 'center',
+  wrapperUser: {
+    backgroundColor: 'grey',
+    width: 60,
+    height: 60,
   },
 });
 
