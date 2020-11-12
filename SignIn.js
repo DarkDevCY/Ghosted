@@ -9,7 +9,6 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
-  Form,
 } from 'react-native';
 
 import {
@@ -24,10 +23,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-const signIn: () => React$Node = (props) => {
+export const signIn = (props) => {
   const [username, setUsername] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
-
+    
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -35,7 +34,6 @@ const signIn: () => React$Node = (props) => {
         <View style={styles.firstBox}></View>
         <View style={styles.secondBox}></View>
         <View style={styles.centerForm}>
-          <Form>
             <TextInput
               style={styles.username}
               placeholder="username"
@@ -55,7 +53,6 @@ const signIn: () => React$Node = (props) => {
               onPress={() => props.navigation.navigate('Main')}>
               <Text style={styles.signText}>Sign In</Text>
             </TouchableOpacity>
-          </Form>
         </View>
       </SafeAreaView>
     </>
@@ -126,5 +123,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default signIn;

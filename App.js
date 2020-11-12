@@ -20,12 +20,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-import signIn from './SignIn'; 
+import {signIn} from './SignIn';
 import Main from './Main';
 
 const Stack = createStackNavigator();
 
-const App: () => React$Node = () => {
+const App = () => {
   return (
     <>
       <NavigationContainer>

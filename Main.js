@@ -25,7 +25,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-const Main: () => React$Node = (props) => {
+export const Main = (props) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
