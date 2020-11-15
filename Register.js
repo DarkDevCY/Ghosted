@@ -24,8 +24,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-export const signIn = ({navigation}) => {
+export const Register = (props) => {
   const [username, setUsername] = useState({value: '', error: ''});
+  const [email, setEmail] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
 
   return (
@@ -42,6 +43,12 @@ export const signIn = ({navigation}) => {
             onChangeText={(text) => setUsername({value: text, error: ''})}
           />
           <TextInput
+            style={styles.email}
+            placeholder="email"
+            value={email.value}
+            onChangeText={(text) => setEmail({value: text, error: ''})}
+          />
+          <TextInput
             style={styles.password}
             secureTextEntry={true}
             placeholder="password"
@@ -54,11 +61,12 @@ export const signIn = ({navigation}) => {
             onPress={() => {
               let name = username.value;
               let pass = password.value;
-              console.log(name, pass);
+              let mail = email.value;
+              console.log(name, pass, email);
 
               async function componentDidMount() {
                 try {
-                  await fetch('http://10.0.2.2:3000/users/login', {
+                  await fetch('http://10.0.2.2:3000/users', {
                     method: 'POST',
                     headers: {
                       Accept: 'application/json',
@@ -66,6 +74,7 @@ export const signIn = ({navigation}) => {
                     },
                     body: JSON.stringify({
                       username: name,
+                      email: mail,
                       password: pass,
                     }),
                   });
@@ -75,13 +84,8 @@ export const signIn = ({navigation}) => {
               }
               componentDidMount();
             }}>
-            <Text style={styles.signText}>Sign In</Text>
+            <Text style={styles.signText}>Register</Text>
           </TouchableOpacity>
-          <Text
-            style={styles.registerText}
-            onPress={() => navigation.navigate('Register')}>
-            Don't have an account?
-          </Text>
         </View>
       </SafeAreaView>
     </>
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
     borderWidth: 50,
     borderColor: 'orange',
     borderRadius: 90,
-    top: -145,
+    top: 55,
     left: -90,
   },
   secondBox: {
@@ -131,6 +135,17 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: 'white',
     paddingLeft: 15,
+  },
+  email: {
+    width: 300,
+    height: 50,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 4,
+    backgroundColor: 'white',
+    paddingLeft: 15,
+    marginBottom: 10,
   },
   button: {
     backgroundColor: '#0085FF',
