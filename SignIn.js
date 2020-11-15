@@ -26,7 +26,7 @@ import 'react-native-gesture-handler';
 export const signIn = (props) => {
   const [username, setUsername] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
-    
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -34,25 +34,48 @@ export const signIn = (props) => {
         <View style={styles.firstBox}></View>
         <View style={styles.secondBox}></View>
         <View style={styles.centerForm}>
-            <TextInput
-              style={styles.username}
-              placeholder="username"
-              value={username.value}
-              onChangeText={(text) => setUsername({value: text, error: ''})}
-            />
-            <TextInput
-              style={styles.password}
-              secureTextEntry={true}
-              placeholder="password"
-              value={password.value}
-              onChangeText={(text) => setPassword({value: text, error: ''})}
-            />
+          <TextInput
+            style={styles.username}
+            placeholder="username"
+            value={username.value}
+            onChangeText={(text) => setUsername({value: text, error: ''})}
+          />
+          <TextInput
+            style={styles.password}
+            secureTextEntry={true}
+            placeholder="password"
+            value={password.value}
+            onChangeText={(text) => setPassword({value: text, error: ''})}
+          />
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => props.navigation.navigate('Main')}>
-              <Text style={styles.signText}>Sign In</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              let name = username.value;
+              let pass = password.value;
+              console.log(name, pass);
+
+              async function componentDidMount() {
+                try {
+                  await fetch('http://10.0.2.2:3000/users/login', {
+                    method: 'POST',
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      username: name,
+                      password: pass,
+                    }),
+                  });
+                } catch (e) {
+                  console.log(e);
+                }
+              }
+              componentDidMount();
+            }}>
+            <Text style={styles.signText}>Sign In</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </>
