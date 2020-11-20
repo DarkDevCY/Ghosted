@@ -24,10 +24,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const signIn = ({navigation}) => {
   const [username, setUsername] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
 
+  if(await AsyncStorage.getItem('accessToken') == )
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -56,24 +59,24 @@ export const signIn = ({navigation}) => {
               let pass = password.value;
               console.log(name, pass);
 
-              async function componentDidMount() {
-                try {
-                  await fetch('http://10.0.2.2:3000/users/login', {
-                    method: 'POST',
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      username: name,
-                      password: pass,
-                    }),
-                  });
-                } catch (e) {
-                  console.log(e);
-                }
+              async function loginRequest() {
+                const res = await fetch('http://10.0.2.2:3000/api/login', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    username: name,
+                    password: pass,
+                  }),
+                });
+                const data = await res.json();
+                console.log(data.token);
+                await AsyncStorage.setItem('accessToken', data.token);
+                console.log(await AsyncStorage.getItem('accessToken'));
               }
-              componentDidMount();
+              loginRequest();
             }}>
             <Text style={styles.signText}>Sign In</Text>
           </TouchableOpacity>
