@@ -12,17 +12,11 @@ import {
   Button,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
+
+import {Home} from './Home';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -30,9 +24,8 @@ export const signIn = ({navigation}) => {
   const [username, setUsername] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
 
-  if(await AsyncStorage.getItem('accessToken') == )
   return (
-    <>
+    <View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <View style={styles.firstBox}></View>
@@ -60,7 +53,7 @@ export const signIn = ({navigation}) => {
               console.log(name, pass);
 
               async function loginRequest() {
-                const res = await fetch('http://10.0.2.2:3000/api/login', {
+                const res = await fetch('http://10.0.2.2:3000/login', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
@@ -72,9 +65,11 @@ export const signIn = ({navigation}) => {
                   }),
                 });
                 const data = await res.json();
-                console.log(data.token);
                 await AsyncStorage.setItem('accessToken', data.token);
-                console.log(await AsyncStorage.getItem('accessToken'));
+
+                if (data.login === true) {
+                  navigation.navigate('Main');
+                }
               }
               loginRequest();
             }}>
@@ -87,9 +82,15 @@ export const signIn = ({navigation}) => {
           </Text>
         </View>
       </SafeAreaView>
-    </>
+    </View>
   );
 };
+
+async function hello() {
+  console.log(await AsyncStorage.getItem('accessToken'));
+}
+
+hello();
 
 const styles = StyleSheet.create({
   firstBox: {

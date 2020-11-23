@@ -23,30 +23,20 @@ import {
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 
-export const Main = (props) => {
+import { Home } from './Home';
+import {signIn} from './SignIn'
+
+const Drawer = createDrawerNavigator();
+
+export const DrawerNavigation = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <View style={styles.wrapperUser}>
-          <Image
-            style={styles.imageUser}
-            source={require('./icons/user-profile.png')}
-          />
-        </View>
-      </SafeAreaView>
-    </>
+    <View>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={signIn} />
+      </Drawer.Navigator>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapperUser: {
-    backgroundColor: 'grey',
-    width: 60,
-    height: 60,
-  },
-});
-
-export default Main;

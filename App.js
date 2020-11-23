@@ -8,20 +8,13 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {NavigationContainer} from '@react-navigation/native';
+import {DrawerActions, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 
 import {signIn} from './SignIn';
-import Main from './Main';
+import {Home} from './Home';
 import {Register} from './Register';
 
 const Stack = createStackNavigator();
@@ -33,7 +26,7 @@ const App = () => {
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="SignIn" component={signIn} />
           <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="Main" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
