@@ -20,7 +20,7 @@ import {Home} from './Home';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const signIn = ({navigation}) => {
+export const signIn = (props) => {
   const [username, setUsername] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
 
@@ -68,7 +68,7 @@ export const signIn = ({navigation}) => {
                 await AsyncStorage.setItem('accessToken', data.token);
 
                 if (data.login === true) {
-                  navigation.navigate('Main');
+                  props.navigation.navigate('Home');
                 }
               }
               loginRequest();
