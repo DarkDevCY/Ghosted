@@ -28,9 +28,14 @@ import 'react-native-gesture-handler';
 
 import Category from './components/Explore/Category';
 import {DrawerNavigation} from './Main';
+import {withSafeAreaInsets} from 'react-native-safe-area-context';
+
+import SlidingUpPanel from 'rn-sliding-up-panel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const {width, height} = Dimensions.get('window');
 
 export const Home = (props) => {
-  const { width, height } = Dimensions.get('window');
   return (
     <View>
       <StatusBar barStyle="dark-content" />
@@ -38,6 +43,11 @@ export const Home = (props) => {
         <DrawerNavigation />
         <View style={{width: width, height: height, backgroundColor: 'white'}}>
           <ScrollView scrollEventThrottle={16}>
+            <TouchableOpacity
+              style={styles.icon}
+              onPress={() => this._panel.show()}>
+              <Image source={require('./images/user.png')} />
+            </TouchableOpacity>
             <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
               <View style={styles.containerText}>
                 <View style={styles.line}></View>
@@ -82,6 +92,21 @@ export const Home = (props) => {
               </View>
             </View>
           </ScrollView>
+          <SlidingUpPanel ref={(c) => (this._panel = c)}>
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.closePanel}
+                onPress={() => this._panel.hide()}>
+                <Image source={require('./images/close.png')} />
+              </TouchableOpacity>
+              <View style={styles.mainFieldBox}>
+                <View style={styles.inputField}><Text>Name</Text></View>
+                <TouchableOpacity>
+                  <Image source={require('./images/pencil.png')} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </SlidingUpPanel>
         </View>
       </SafeAreaView>
     </View>
@@ -91,7 +116,7 @@ export const Home = (props) => {
 const styles = StyleSheet.create({
   containerText: {
     flexDirection: 'row',
-    marginTop: 60,
+    marginTop: 30,
     marginLeft: 20,
     color: '#333333',
   },
@@ -112,4 +137,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 14,
   },
+  icon: {
+    backgroundColor: '#333',
+    borderRadius: 90,
+    width: 45,
+    height: 45,
+    marginTop: 24,
+    marginRight: 23,
+    alignSelf: 'flex-end',
+    zIndex: 1000,
+  },
+  container: {
+    backgroundColor: 'white',
+    height: height,
+  },
+  closePanel: {
+    alignSelf: 'flex-end',
+    marginRight: 30,
+    marginTop: 25,
+  },
+  mainFieldBox: {
+    flexDirection: 'row'
+  }
 });
