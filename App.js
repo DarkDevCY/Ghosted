@@ -6,11 +6,13 @@ import {
   View,
   Text,
   StatusBar,
+  Dimensions
 } from 'react-native';
 
 import {DrawerActions, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import DrawerItem from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 
 import {signIn} from './SignIn';
@@ -19,6 +21,8 @@ import {Register} from './Register';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const {width, height} = Dimensions.get('window');
 
 function DrawerRoutes() {
   return (

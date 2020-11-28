@@ -27,6 +27,8 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 
 import Category from './components/Explore/Category';
+import BigMovie from './components/Explore/BigMovie';
+
 import {DrawerNavigation} from './Main';
 import {withSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -42,68 +44,118 @@ export const Home = (props) => {
       <SafeAreaView>
         <DrawerNavigation />
         <View style={{width: width, height: height, backgroundColor: 'white'}}>
-          <ScrollView scrollEventThrottle={16}>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={() => this._panel.show()}>
-              <Image source={require('./images/user.png')} />
-            </TouchableOpacity>
-            <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-              <View style={styles.containerText}>
-                <View style={styles.line}></View>
-                <Text style={styles.featuredText}>Featured</Text>
+          <ScrollView>
+            <ScrollView scrollEventThrottle={16}>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => this._panel.show()}>
+                <Image source={require('./images/user.png')} />
+              </TouchableOpacity>
+              <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
+                <View style={styles.containerText}>
+                  <View style={styles.line}></View>
+                  <Text style={styles.featuredText}>Featured</Text>
+                </View>
+                <View style={{height: 220, marginTop: 20}}>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    <Category
+                      imageUri={require('./images/Image1.png')}
+                      name="Home1"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                    />
+                    <Category
+                      imageUri={require('./images/Image2.png')}
+                      name="Hello"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                    />
+                    <Category
+                      imageUri={require('./images/Image3.png')}
+                      name="I am Dark"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                    />
+                    <Category
+                      imageUri={require('./images/Image4.png')}
+                      name="Bloodshot"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                    />
+                  </ScrollView>
+                </View>
               </View>
-              <View style={{height: 220, marginTop: 20}}>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  <Category
-                    imageUri={require('./images/Image1.png')}
-                    name="Home1"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
-                  />
-                  <Category
-                    imageUri={require('./images/Image2.png')}
-                    name="Hello"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
-                  />
-                  <Category
-                    imageUri={require('./images/Image3.png')}
-                    name="I am Dark"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
-                  />
-                  <Category
-                    imageUri={require('./images/Image4.png')}
-                    name="Bloodshot"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
-                  />
-                </ScrollView>
+            </ScrollView>
+            <ScrollView scrollEventThrottle={16}>
+              <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
+                <View style={styles.containerTextSecond}>
+                  <View style={styles.line}></View>
+                  <Text style={styles.newReleasesText}>New Releases</Text>
+                </View>
+                <BigMovie
+                  imageUri={require('./images/Image1.png')}
+                  name="Home1"
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                />
+                <BigMovie
+                  imageUri={require('./images/Image2.png')}
+                  name="Hello"
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                />
+                <BigMovie
+                  imageUri={require('./images/Image3.png')}
+                  name="I am Dark"
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                />
+                <BigMovie
+                  imageUri={require('./images/Image4.png')}
+                  name="Bloodshot"
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis... "
+                />
               </View>
-            </View>
-          </ScrollView>
-          <ScrollView scrollEventThrottle={16}>
-            <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-              <View style={styles.containerTextSecond}>
-                <View style={styles.line}></View>
-                <Text style={styles.featuredText}>New Releases</Text>
-              </View>
-              <View style={{height: 240, marginTop: 20}}>
-                <ScrollView horizontal={false}></ScrollView>
-              </View>
-            </View>
+            </ScrollView>
           </ScrollView>
           <SlidingUpPanel ref={(c) => (this._panel = c)}>
             <View style={styles.container}>
               <TouchableOpacity
                 style={styles.closePanel}
                 onPress={() => this._panel.hide()}>
-                <Image source={require('./images/close.png')} />
+                <Image source={require('./images/cancel.png')} />
               </TouchableOpacity>
-              <View style={styles.mainFieldBox}>
-                <View style={styles.inputField}><Text>Name</Text></View>
-                <TouchableOpacity>
-                  <Image source={require('./images/pencil.png')} />
-                </TouchableOpacity>
+              <View style={styles.wrapperSlideUp}>
+                <View style={styles.wrapperInfo}>
+                  <View style={styles.wrapperInfoIcon}>
+                    <Image source={require('./images/user.png')} />
+                  </View>
+                  <View style={styles.wrapperInfoInfo}>
+                    <Text style={styles.wrapperInfoName}>Username</Text>
+                    <Text style={styles.wrapperInfoEmail}>
+                      domain@domain.com
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.wrapperFields}>
+                  <View style={styles.mainFieldBox}>
+                    <View style={styles.inputField}>
+                      <Text style={styles.inputName}>Name</Text>
+                    </View>
+                    <TouchableOpacity style={styles.editIcon}>
+                      <Image
+                        source={require('./images/pencil.png')}
+                        style={styles.imageEdit}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.mainFieldBox}>
+                    <View style={styles.inputField}>
+                      <Text style={styles.inputName}>Password</Text>
+                    </View>
+                    <TouchableOpacity style={styles.editIcon}>
+                      <Image
+                        source={require('./images/pencil.png')}
+                        style={styles.imageEdit}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
           </SlidingUpPanel>
@@ -122,7 +174,7 @@ const styles = StyleSheet.create({
   },
   containerTextSecond: {
     flexDirection: 'row',
-    marginTop: -22,
+    marginTop: 24,
     marginLeft: 20,
     color: '#333333',
   },
@@ -137,8 +189,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 14,
   },
+  newReleasesText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginLeft: 14,
+  },
   icon: {
-    backgroundColor: '#333',
+    backgroundColor: '#e1e6e2',
     borderRadius: 90,
     width: 45,
     height: 45,
@@ -146,6 +203,9 @@ const styles = StyleSheet.create({
     marginRight: 23,
     alignSelf: 'flex-end',
     zIndex: 1000,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
   },
   container: {
     backgroundColor: 'white',
@@ -157,6 +217,44 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   mainFieldBox: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+    width: width - 120,
+    height: 40,
+    borderColor: '#333',
+    borderWidth: 2,
+    backgroundColor: '#e1e6e2',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 20,
+  },
+  editIcon: {
+    marginRight: 13,
+  },
+  imageEdit: {
+    height: 20,
+    width: 20,
+  },
+  inputName: {
+    paddingLeft: 10,
+  },
+  wrapperFields: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  wrapperInfo: {
+    flexDirection: 'row',
+    marginTop: 22,
+    marginBottom: 15,
+    justifyContent: 'center',
+  },
+  wrapperInfoInfo: {
+    marginLeft: 34,
+  },
+  wrapperInfoName: {
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
 });
