@@ -24,16 +24,17 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
+import Star from 'react-native-star-view';
 
 const {width, height} = Dimensions.get('window');
 
 export const BigMovie = (props) => {
   return (
     <View>
-      <View style={styles.mainView}>
+      <TouchableOpacity style={styles.mainView}>
         <View style={{flex: 2}}>
           <Image
-            source={props.imageUri}
+                      source={{ uri: props.imageUri }}
             style={{
               flex: 1,
               width: 120,
@@ -45,18 +46,14 @@ export const BigMovie = (props) => {
             }}
           />
         </View>
-        <View style={styles.wrapperItemsDesc}>
-          <View style={styles.wrapperMainItems}>
-            <Text style={styles.mName}>{props.name}</Text>
-            <Text style={styles.mDescription}>{props.description}</Text>
-          </View>
-          <View style={styles.mainContainer}>
-            <TouchableOpacity style={styles.mButton}>
-              <Text style={styles.mButtonText}>Read More</Text>
-            </TouchableOpacity>
+        <View style={styles.wrapperItems}>
+          <Text style={styles.mName}>{props.name}</Text>
+          <View style={styles.wrapperInfo}>
+            <Star score={props.score} style={styles.starStyle} size={10} />
+            <Text style={{paddingLeft: 10}}>{props.score}</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -101,8 +98,8 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 7,
   },
-    wrapperMainItems: {
-    alignSelf: 'flex-end'
+  wrapperMainItems: {
+    alignSelf: 'flex-end',
   },
 });
 

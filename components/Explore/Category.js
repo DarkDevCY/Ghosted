@@ -24,14 +24,16 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
+import Star from 'react-native-star-view';
+
 
 export const Category = (props) => {
   return (
     <View>
-      <View style={styles.mainView}>
+      <TouchableOpacity style={styles.mainView}>
         <View style={{flex: 2}}>
           <Image
-            source={props.imageUri}
+            source={{ uri: props.imageUri }}
             style={{
               flex: 1,
               width: null,
@@ -43,31 +45,30 @@ export const Category = (props) => {
           />
         </View>
         <Text style={styles.mName}>{props.name}</Text>
-        <Text style={styles.mDescription}>{props.description}</Text>
-        <View style={styles.mainContainer}>
-          <TouchableOpacity style={styles.mButton}>
-            <Text style={styles.mButtonText}>Read More</Text>
-          </TouchableOpacity>
+        <View style={styles.wrapperInfo}>
+          <Star score={props.score} style={styles.starStyle} size={10} />
+          <Text style={{ paddingLeft: 10,}}>{props.score}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   mainView: {
-    backgroundColor: '#ededed',
+    backgroundColor: '#e1e6e2',
     height: 220,
     width: 150,
     marginLeft: 20,
     borderWidth: 0.5,
     borderColor: '#dddddd',
-    borderRadius: 6,
+    borderRadius: 8,
   },
   mName: {
     marginBottom: 0,
     paddingBottom: 0,
     paddingLeft: 10,
+    marginTop: 5,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -76,27 +77,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 12,
   },
-  mainContainer: {
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
+  starStyle: {
+    width: 100,
+    height: 20,
+    marginBottom: 10,
+    marginLeft: 10,
   },
-  mButton: {
-    backgroundColor: '#1a8fe8',
-    width: 130,
-    height: 28,
-    marginTop: 0,
-    borderRadius: 2,
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-  mButtonText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 16,
-  },
+  wrapperInfo: {
+    flexDirection: 'row'
+  }
 });
 
 export default Category;
