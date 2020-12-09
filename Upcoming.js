@@ -46,7 +46,7 @@ export const Upcoming = (props) => {
     const fetchData = async () => {
       try {
         const upcomingResponse = await axios.get(
-          'https://api.themoviedb.org/3/movie/upcoming?api_key=2cd6bb77b8884b33d36972281670e3bb',
+          'https://api.themoviedb.org/3/movie/upcoming?api_key=',
         );
         setComing(
           upcomingResponse.data.results.map((n) => ({

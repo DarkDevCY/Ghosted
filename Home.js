@@ -45,7 +45,7 @@ export const Home = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'https://api.themoviedb.org/3/movie/top_rated?api_key=2cd6bb77b8884b33d36972281670e3bb',
+          'https://api.themoviedb.org/3/movie/top_rated?api_key=',
         );
         setMovies(
           response.data.results.map((m) => ({
@@ -67,7 +67,7 @@ export const Home = (props) => {
     const fetchData = async () => {
       try {
         const responseNew = await axios.get(
-          'https://api.themoviedb.org/3/movie/now_playing?api_key=2cd6bb77b8884b33d36972281670e3bb',
+          'https://api.themoviedb.org/3/movie/now_playing?api_key=',
         );
         setNewMovies(
           responseNew.data.results.map((n) => ({
