@@ -6,7 +6,7 @@ import {
   View,
   Text,
   StatusBar,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 
 import {DrawerActions, NavigationContainer} from '@react-navigation/native';
@@ -18,6 +18,8 @@ import 'react-native-gesture-handler';
 import {signIn} from './SignIn';
 import {Home} from './Home';
 import {Register} from './Register';
+import {Upcoming} from './Upcoming';
+import {TVShows} from './TVShows';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -28,6 +30,8 @@ function DrawerRoutes() {
   return (
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Upcoming Movies" component={Upcoming} />
+      <Drawer.Screen name="TV Shows" component={TVShows} />
     </Drawer.Navigator>
   );
 }

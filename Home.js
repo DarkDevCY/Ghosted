@@ -31,11 +31,10 @@ import 'react-native-gesture-handler';
 import Category from './components/Explore/Category';
 import BigMovie from './components/Explore/BigMovie';
 
-import {DrawerNavigation} from './Main';
 import {withSafeAreaInsets} from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
 
@@ -46,7 +45,7 @@ export const Home = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'https://api.themoviedb.org/3/movie/top_rated?api_key=',
+          'https://api.themoviedb.org/3/movie/top_rated?api_key=2cd6bb77b8884b33d36972281670e3bb',
         );
         setMovies(
           response.data.results.map((m) => ({
@@ -68,7 +67,7 @@ export const Home = (props) => {
     const fetchData = async () => {
       try {
         const responseNew = await axios.get(
-          'https://api.themoviedb.org/3/movie/now_playing?api_key=',
+          'https://api.themoviedb.org/3/movie/now_playing?api_key=2cd6bb77b8884b33d36972281670e3bb',
         );
         setNewMovies(
           responseNew.data.results.map((n) => ({
@@ -76,22 +75,21 @@ export const Home = (props) => {
             title: n.title,
             rating: n.vote_average / 2,
             image: n.poster_path,
+            released: n.release_date,
+            overview: n.overview,
           })),
         );
-        console.log(responseNew);
       } catch (e) {
         console.log(e);
       }
     };
     fetchData();
   }, []);
-  console.log(newMovies);
 
   return (
     <View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <DrawerNavigation />
         <View style={{width: width, height: height, backgroundColor: 'white'}}>
           <ScrollView>
             <ScrollView scrollEventThrottle={16}>
@@ -135,6 +133,8 @@ export const Home = (props) => {
                     score={movie.rating}
                     imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
                     key={movie.title}
+                    released={movie.released}
+                    overview={movie.overview}
                   />
                 ))}
               </View>

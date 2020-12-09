@@ -30,7 +30,7 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 
 const {width, height} = Dimensions.get('window');
 
-export const Category = (props) => {
+export const TVShowsCard = (props) => {
   return (
     <View>
       <TouchableOpacity style={styles.mainView}>
@@ -60,8 +60,8 @@ export const Category = (props) => {
 const styles = StyleSheet.create({
   mainView: {
     backgroundColor: '#e1e6e2',
-    height: 220,
-    width: 150,
+    height: 250,
+    width: 156,
     marginLeft: 20,
     borderWidth: 0.5,
     borderColor: '#dddddd',
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Category;
+export default TVShowsCard;

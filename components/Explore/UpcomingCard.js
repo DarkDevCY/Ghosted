@@ -24,13 +24,12 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-
 import Star from 'react-native-star-view';
-import SlidingUpPanel from 'rn-sliding-up-panel';
+import {Upcoming} from '../../Upcoming';
 
 const {width, height} = Dimensions.get('window');
 
-export const Category = (props) => {
+export const UpcomingCard = (props) => {
   return (
     <View>
       <TouchableOpacity style={styles.mainView}>
@@ -39,18 +38,23 @@ export const Category = (props) => {
             source={{uri: props.imageUri}}
             style={{
               flex: 1,
-              width: null,
-              height: null,
+              width: 150,
+              height: 220,
               resizeMode: 'cover',
               borderTopLeftRadius: 6,
-              borderTopRightRadius: 6,
+              borderBottomLeftRadius: 6,
+              justifyContent: 'flex-start',
             }}
           />
         </View>
-        <Text style={styles.mName}>{props.name}</Text>
-        <View style={styles.wrapperInfo}>
-          <Star score={props.score} style={styles.starStyle} size={10} />
-          <Text style={{paddingLeft: 10}}>{props.score}</Text>
+        <View style={styles.wrapperItems}>
+          <Text style={styles.mName}>{props.name}</Text>
+          <View style={{flexDirection: 'row', marginLeft: 14, marginTop: 10}}>
+            <Text style={{fontWeight: 'bold', fontSize: 15}}>
+              Releasing on:{' '}
+            </Text>
+            <Text style={styles.createdOn}> {props.releasing}</Text>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
@@ -59,36 +63,36 @@ export const Category = (props) => {
 
 const styles = StyleSheet.create({
   mainView: {
+    flexDirection: 'row',
+    height: 200,
+    width: width - 40,
     backgroundColor: '#e1e6e2',
-    height: 220,
-    width: 150,
-    marginLeft: 20,
-    borderWidth: 0.5,
-    borderColor: '#dddddd',
-    borderRadius: 8,
+    borderRadius: 6,
+    alignSelf: 'center',
+    marginTop: 42,
+  },
+  wrapperItemsDesc: {
+    justifyContent: 'space-between',
+  },
+  wrapperItems: {
+    width: width - 200,
   },
   mName: {
-    marginBottom: 0,
-    paddingBottom: 0,
-    paddingLeft: 10,
-    marginTop: 5,
-    fontSize: 16,
     fontWeight: 'bold',
+    fontSize: 21,
+    marginLeft: 14,
+    marginTop: 46,
   },
   mDescription: {
-    paddingLeft: 10,
-    fontSize: 12,
-    marginBottom: 12,
+    marginLeft: 14,
+    marginTop: 7,
   },
-  starStyle: {
-    width: 100,
-    height: 20,
-    marginBottom: 10,
-    marginLeft: 10,
+  wrapperMainItems: {
+    alignSelf: 'flex-end',
   },
-  wrapperInfo: {
-    flexDirection: 'row',
+  createdOn: {
+    marginTop: 3,
   },
 });
 
-export default Category;
+export default UpcomingCard;

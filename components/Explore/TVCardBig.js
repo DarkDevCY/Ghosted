@@ -28,7 +28,7 @@ import Star from 'react-native-star-view';
 
 const {width, height} = Dimensions.get('window');
 
-export const BigMovie = (props) => {
+export const TVCardBig = (props) => {
   return (
     <View>
       <TouchableOpacity style={styles.mainView}>
@@ -54,7 +54,7 @@ export const BigMovie = (props) => {
           </View>
           <View style={{flexDirection: 'row', marginLeft: 14, marginTop: 10}}>
             <Text style={{fontWeight: 'bold', fontSize: 17}}>
-              Released on: {' '}
+              Released on:{' '}
             </Text>
             <Text style={styles.createdOn}> {props.released}</Text>
           </View>
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   createdOn: {
-    marginTop: 3
+    marginTop: 3,
   },
 });
 
-export default BigMovie;
+export default TVCardBig;
