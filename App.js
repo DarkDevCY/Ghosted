@@ -19,7 +19,9 @@ import {signIn} from './SignIn';
 import {Home} from './Home';
 import {Register} from './Register';
 import {Upcoming} from './Upcoming';
-import {TVShows} from './TVShows';
+import { TVShows } from './TVShows';
+import { ForgotPass } from './ForgotPass';
+import { ChangePass } from './ChangePass';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,6 +45,8 @@ const App = () => {
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="SignIn" component={signIn} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="ForgotPass" component={ForgotPass} />
+          <Stack.Screen name="ChangePass" component={ChangePass} />
           <Stack.Screen name="Home" component={DrawerRoutes} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -52,7 +52,7 @@ export const BigMovie = (props) => {
             <Star score={props.score} style={styles.starStyle} size={10} />
             <Text style={{paddingLeft: 12}}>{props.score}</Text>
           </View>
-          <View style={{flexDirection: 'row', marginLeft: 14, marginTop: 10}}>
+          <View style={{flexDirection: 'row', marginLeft: 14, marginTop: 24}}>
             <Text style={{fontWeight: 'bold', fontSize: 17}}>
               Released on: {' '}
             </Text>

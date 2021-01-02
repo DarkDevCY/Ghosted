@@ -37,11 +37,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import {UpcomingCard} from './components/Explore/UpcomingCard';
+import SearchCard from './components/Explore/SearchCard';
 
 const {width, height} = Dimensions.get('window');
 
 export const Upcoming = (props) => {
+  const date = new Date();
   const [upcoming, setComing] = useState([]);
+  const [searchData, setSearchData] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,36 +69,90 @@ export const Upcoming = (props) => {
     fetchData();
   }, []);
 
-  return (
-    <View>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <View style={{width: width, height: height, backgroundColor: 'white'}}>
-          <ScrollView>
-            <View style={styles.wrapperSectionText}>
-              <View style={styles.line}></View>
-              <Text style={styles.SectionText}>Upcoming Movies</Text>
-            </View>
-            {upcoming.map((movie) => (
-              <UpcomingCard
-                imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
-                name={movie.title}
-                releasing={movie.releasing}
-                key={movie.title}
-              />
-            ))}
-          </ScrollView>
-        </View>
-      </SafeAreaView>
-    </View>
-  );
+  if (searchData.length == 0) {
+    return (
+      <View>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <View
+            style={{width: width, height: height, backgroundColor: 'white'}}>
+            <ScrollView>
+              <View
+                style={{width: width, justifyContent: 'center', marginTop: 35}}>
+                <SearchCard setSearch={setSearchData} data={searchData} />
+              </View>
+              <View style={styles.wrapperSectionText}>
+                <View style={styles.line}></View>
+                <Text style={styles.SectionText}>Upcoming Movies</Text>
+              </View>
+              {upcoming.map((movie) => (
+                <UpcomingCard
+                  imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
+                  name={movie.title}
+                  releasing={date.toLocaleDateString(movie.releasing)}
+                  key={movie.title}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        </SafeAreaView>
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <View
+            style={{
+              width: width,
+              height: height,
+              backgroundColor: 'white',
+            }}>
+            <ScrollView>
+              <TouchableOpacity
+                onPress={() => setSearchData([])}
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 20,
+                  marginTop: 40,
+                  marginBottom: 7,
+                }}>
+                <Image
+                  source={require('./images/left-arrow.png')}
+                  style={{width: 20, height: 20, marginRight: 10}}
+                />
+                <Text style={{color: '#333333', fontSize: 16}}>Back</Text>
+              </TouchableOpacity>
+              <View style={styles.containerText}>
+                <View style={styles.line}></View>
+                <Text style={styles.searchText}>Search Results for: </Text>
+                <Text style={styles.searchInputText}>Bloodshot</Text>
+              </View>
+              <ScrollView scrollEventThrottle={16}>
+                {searchData.map((search) => (
+                  <BigMovie
+                    key={search.title}
+                    name={search.title}
+                    score={search.rating}
+                    imageUri={'https://image.tmdb.org/t/p/w500/' + search.image}
+                    released={date.toLocaleDateString(search.released)}
+                  />
+                ))}
+              </ScrollView>
+            </ScrollView>
+          </View>
+        </SafeAreaView>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
   wrapperSectionText: {
     flexDirection: 'row',
     marginLeft: 20,
-    marginTop: 50,
+    marginTop: 30,
   },
   line: {
     width: 70,
@@ -106,5 +164,21 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 14,
+  },
+  containerText: {
+    flexDirection: 'row',
+    marginTop: 15,
+    marginLeft: 20,
+    color: '#333333',
+  },
+  searchText: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    marginLeft: 14,
+  },
+  searchInputText: {
+    fontSize: 16,
+    marginLeft: 4,
+    marginTop: 4,
   },
 });

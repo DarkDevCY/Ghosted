@@ -10,16 +10,23 @@ import {
   TouchableOpacity,
   Dimensions,
   Button,
+  Alert,
+  Modal,
+  Image,
 } from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
+const {width, height} = Dimensions.get('window');
+
 export const Register = (props) => {
   const [username, setUsername] = useState({value: '', error: ''});
   const [email, setEmail] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
+  const [modalVisibleSuccess, setModalVisibleSuccess] = useState(false);
+  const [modalVisibleError, setModalVisibleError] = useState(false);
 
   return (
     <>
@@ -58,7 +65,7 @@ export const Register = (props) => {
 
               async function componentDidMount() {
                 try {
-                  await fetch('http://10.0.2.2:3000/register', {
+                  await fetch('/register', {
                     method: 'POST',
                     headers: {
                       Accept: 'application/json',
@@ -69,7 +76,25 @@ export const Register = (props) => {
                       email: mail,
                       password: pass,
                     }),
-                  });
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      console.log(data.response);
+                      if (data.statusC == '201') {
+                        setModalVisibleSuccess(true);
+                        setTimeout(function () {
+                          setModalVisibleSuccess(false);
+                          setTimeout(function () {
+                            props.navigation.navigate('SignIn');
+                          }, 1000);
+                        }, 2000);
+                      } else if(data.statusC == '424') {
+                        setModalVisibleError(true);
+                        setTimeout(function () {
+                          setModalVisibleError(false);
+                        }, 2000);
+                      }
+                    });
                 } catch (e) {
                   console.log(e);
                 }
@@ -78,6 +103,61 @@ export const Register = (props) => {
             }}>
             <Text style={styles.signText}>Register</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginTop: 15}}
+            onPress={() => {
+              props.navigation.navigate('SignIn');
+            }}>
+            <Text>Back to Login</Text>
+          </TouchableOpacity>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={modalVisibleSuccess}
+            style={{
+              width: width - 100,
+              height: 50,
+            }}>
+            <View style={styles.mainModalWrapper}>
+              <View style={styles.wrapper}>
+                <View style={styles.icon}>
+                  <Image
+                    source={require('./images/checkmark.png')}
+                    style={styles.image}
+                  />
+                </View>
+                <View style={styles.wrapperText}>
+                  <Text style={styles.text}>
+                    Account was created successfully.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={modalVisibleError}
+            style={{
+              width: width - 100,
+              height: 50,
+            }}>
+            <View style={styles.mainModalWrapper}>
+              <View style={styles.wrapperError}>
+                <View style={styles.icon}>
+                  <Image
+                    source={require('./images/cancelWhite.png')}
+                    style={styles.imageE}
+                  />
+                </View>
+                <View style={styles.wrapperText}>
+                  <Text style={styles.textError}>
+                    Error: The error.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </View>
       </SafeAreaView>
     </>
@@ -158,4 +238,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  wrapper: {
+    width: width - 100,
+    backgroundColor: '#16F6A6',
+    borderRadius: 6,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  wrapperError: {
+    width: width - 100,
+    backgroundColor: '#F63E16',
+    borderRadius: 6,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 24,
+  },
+  text: {
+    fontSize: 15,
+    color: '#333',
+  },
+  textError: {
+    fontSize: 15,
+    color: '#fff',
+  },
+  mainModalWrapper: {
+    width: width,
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 60,
+  },
+  imageE: {
+    marginTop: 5
+  }
 });

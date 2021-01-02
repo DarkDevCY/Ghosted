@@ -35,11 +35,14 @@ import {withSafeAreaInsets} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import SearchCard from './components/Explore/SearchCard';
 
 const {width, height} = Dimensions.get('window');
 
 export const Home = (props) => {
+  const date = new Date();
   const [movies, setMovies] = useState([]);
+  const [searchData, setSearchData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,116 +89,177 @@ export const Home = (props) => {
     fetchData();
   }, []);
 
-  return (
-    <View>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <View style={{width: width, height: height, backgroundColor: 'white'}}>
-          <ScrollView>
-            <ScrollView scrollEventThrottle={16}>
-              <TouchableOpacity
-                style={styles.icon}
-                onPress={() => this._panel.show()}>
-                <Image source={require('./images/user.png')} />
-              </TouchableOpacity>
-              <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-                <View style={styles.containerText}>
-                  <View style={styles.line}></View>
-                  <Text style={styles.featuredText}>Featured</Text>
+  if (searchData.length == 0) {
+    return (
+      <View>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <View
+            style={{width: width, height: height, backgroundColor: 'white'}}>
+            <ScrollView>
+              <ScrollView scrollEventThrottle={16}>
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => this._panel.show()}>
+                  <Image source={require('./images/user.png')} />
+                </TouchableOpacity>
+                <View style={{width: width, justifyContent: 'center'}}></View>
+                <View
+                  style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
+                  <SearchCard setSearch={setSearchData} data={searchData} />
+                  <View style={styles.containerText}>
+                    <View style={styles.line}></View>
+                    <Text style={styles.featuredText}>Featured</Text>
+                  </View>
+                  <View style={{height: 220, marginTop: 20}}>
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}>
+                      {movies.map((movie) => (
+                        <Category
+                          name={movie.title}
+                          score={movie.rating}
+                          imageUri={
+                            'https://image.tmdb.org/t/p/w500/' + movie.image
+                          }
+                          key={movie.title}
+                        />
+                      ))}
+                    </ScrollView>
+                  </View>
                 </View>
-                <View style={{height: 220, marginTop: 20}}>
-                  <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
-                    {movies.map((movie) => (
-                      <Category
-                        name={movie.title}
-                        score={movie.rating}
-                        imageUri={
-                          'https://image.tmdb.org/t/p/w500/' + movie.image
-                        }
-                        key={movie.title}
-                      />
-                    ))}
-                  </ScrollView>
+              </ScrollView>
+              <ScrollView scrollEventThrottle={16}>
+                <View
+                  style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
+                  <View style={styles.containerTextSecond}>
+                    <View style={styles.line}></View>
+                    <Text style={styles.newReleasesText}>Now Playing</Text>
+                  </View>
+                  {newMovies.map((movie) => (
+                    <BigMovie
+                      name={movie.title}
+                      score={movie.rating}
+                      imageUri={
+                        'https://image.tmdb.org/t/p/w500/' + movie.image
+                      }
+                      key={movie.title}
+                      released={date.toLocaleDateString(movie.released)}
+                      overview={movie.overview}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+            </ScrollView>
+            <SlidingUpPanel ref={(c) => (this._panel = c)}>
+              <View style={styles.container}>
+                <TouchableOpacity
+                  style={styles.closePanel}
+                  onPress={() => this._panel.hide()}>
+                  <Image source={require('./images/cancel.png')} />
+                </TouchableOpacity>
+                <View style={styles.wrapperSlideUp}>
+                  <View style={styles.wrapperInfo}>
+                    <View style={styles.wrapperInfoIcon}>
+                      <Image source={require('./images/user.png')} />
+                    </View>
+                    <View style={styles.wrapperInfoInfo}>
+                      <Text style={styles.wrapperInfoName}>Username</Text>
+                      <Text style={styles.wrapperInfoEmail}>
+                        domain@domain.com
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.wrapperFields}>
+                    <View style={styles.mainFieldBox}>
+                      <View style={styles.inputField}>
+                        <Text style={styles.inputName}>Name</Text>
+                      </View>
+                      <TouchableOpacity style={styles.editIcon}>
+                        <Image
+                          source={require('./images/pencil.png')}
+                          style={styles.imageEdit}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.mainFieldBox}>
+                      <View style={styles.inputField}>
+                        <Text style={styles.inputName}>Password</Text>
+                      </View>
+                      <TouchableOpacity style={styles.editIcon}>
+                        <Image
+                          source={require('./images/pencil.png')}
+                          style={styles.imageEdit}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </ScrollView>
-            <ScrollView scrollEventThrottle={16}>
-              <View style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-                <View style={styles.containerTextSecond}>
-                  <View style={styles.line}></View>
-                  <Text style={styles.newReleasesText}>Now Playing</Text>
-                </View>
-                {newMovies.map((movie) => (
+            </SlidingUpPanel>
+          </View>
+        </SafeAreaView>
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <View
+            style={{
+              width: width,
+              height: height,
+              backgroundColor: 'white',
+            }}>
+            <ScrollView>
+              <TouchableOpacity
+                onPress={() => setSearchData([])}
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 20,
+                  marginTop: 40,
+                  marginBottom: 7,
+                }}>
+                <Image
+                  source={require('./images/left-arrow.png')}
+                  style={{width: 20, height: 20, marginRight: 10}}
+                />
+                <Text style={{color: '#333333', fontSize: 16}}>Back</Text>
+              </TouchableOpacity>
+              <View style={styles.containerText}>
+                <View style={styles.line}></View>
+                <Text style={styles.searchText}>Search Results for: </Text>
+                <Text style={styles.searchInputText}>Bloodshot</Text>
+              </View>
+              <ScrollView scrollEventThrottle={16}>
+                {searchData.map((search) => (
                   <BigMovie
-                    name={movie.title}
-                    score={movie.rating}
-                    imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
-                    key={movie.title}
-                    released={movie.released}
-                    overview={movie.overview}
+                    name={search.title}
+                    score={search.rating}
+                    imageUri={'https://image.tmdb.org/t/p/w500/' + search.image}
+                    released={date.toLocaleDateString(search.released)}
+                    key={search.title}
                   />
                 ))}
-              </View>
+              </ScrollView>
             </ScrollView>
-          </ScrollView>
-          <SlidingUpPanel ref={(c) => (this._panel = c)}>
-            <View style={styles.container}>
-              <TouchableOpacity
-                style={styles.closePanel}
-                onPress={() => this._panel.hide()}>
-                <Image source={require('./images/cancel.png')} />
-              </TouchableOpacity>
-              <View style={styles.wrapperSlideUp}>
-                <View style={styles.wrapperInfo}>
-                  <View style={styles.wrapperInfoIcon}>
-                    <Image source={require('./images/user.png')} />
-                  </View>
-                  <View style={styles.wrapperInfoInfo}>
-                    <Text style={styles.wrapperInfoName}>Username</Text>
-                    <Text style={styles.wrapperInfoEmail}>
-                      domain@domain.com
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.wrapperFields}>
-                  <View style={styles.mainFieldBox}>
-                    <View style={styles.inputField}>
-                      <Text style={styles.inputName}>Name</Text>
-                    </View>
-                    <TouchableOpacity style={styles.editIcon}>
-                      <Image
-                        source={require('./images/pencil.png')}
-                        style={styles.imageEdit}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.mainFieldBox}>
-                    <View style={styles.inputField}>
-                      <Text style={styles.inputName}>Password</Text>
-                    </View>
-                    <TouchableOpacity style={styles.editIcon}>
-                      <Image
-                        source={require('./images/pencil.png')}
-                        style={styles.imageEdit}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </SlidingUpPanel>
-        </View>
-      </SafeAreaView>
-    </View>
-  );
+          </View>
+        </SafeAreaView>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
+  searchInputText: {
+    fontSize: 16,
+    marginLeft: 4,
+    marginTop: 4,
+  },
   containerText: {
     flexDirection: 'row',
-    marginTop: 30,
+    marginTop: 15,
     marginLeft: 20,
     color: '#333333',
   },
@@ -213,6 +277,11 @@ const styles = StyleSheet.create({
   },
   featuredText: {
     fontSize: 25,
+    fontWeight: 'bold',
+    marginLeft: 14,
+  },
+  searchText: {
+    fontSize: 22,
     fontWeight: 'bold',
     marginLeft: 14,
   },

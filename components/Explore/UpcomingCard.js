@@ -53,7 +53,7 @@ export const UpcomingCard = (props) => {
             <Text style={{fontWeight: 'bold', fontSize: 15}}>
               Releasing on:{' '}
             </Text>
-            <Text style={styles.createdOn}> {props.releasing}</Text>
+            <Text style={styles.createdOn}>{props.releasing}</Text>
           </View>
         </View>
       </TouchableOpacity>
