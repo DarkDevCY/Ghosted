@@ -60,6 +60,7 @@ export const Watchlist = (props) => {
             tagline: g[0].tagline,
             voteCount: g[0].vote_count,
             id: g[0].id,
+            watched: g[1],
           })),
         );
       } catch (e) {
@@ -87,6 +88,8 @@ export const Watchlist = (props) => {
                 year={w.date.split('-')}
                 time={w.runtime}
                 key={w.id}
+                id={w.id}
+                watched={w.watched}
               />
             ))}
           </View>

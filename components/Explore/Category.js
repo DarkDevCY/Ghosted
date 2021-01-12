@@ -50,7 +50,7 @@ export const Category = (props) => {
         <Text style={styles.mName}>{props.name}</Text>
         <View style={styles.wrapperInfo}>
           <Star score={props.score} style={styles.starStyle} size={10} />
-          <Text style={{paddingLeft: 10}}>{props.score}</Text>
+          <Text style={{paddingLeft: 10, color: '#F7AA36', fontWeight: 'bold', fontSize: 16}}>{props.score}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -59,12 +59,10 @@ export const Category = (props) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    backgroundColor: '#e1e6e2',
+    backgroundColor: '#333333',
     height: 220,
     width: 150,
     marginLeft: 20,
-    borderWidth: 0.5,
-    borderColor: '#dddddd',
     borderRadius: 8,
   },
   mName: {
@@ -74,6 +72,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
   },
   mDescription: {
     paddingLeft: 10,

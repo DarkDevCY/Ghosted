@@ -83,7 +83,7 @@ export const Home = (props) => {
             released: n.release_date,
             overview: n.overview,
             genre: n.genre_ids,
-            overview: n.overview
+            overview: n.overview,
           })),
         );
       } catch (e) {
@@ -98,119 +98,60 @@ export const Home = (props) => {
       <View>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          <View
-            style={{width: width, height: height, backgroundColor: 'white'}}>
-            <ScrollView>
-              <ScrollView scrollEventThrottle={16}>
-                <TouchableOpacity
-                  style={styles.icon}
-                  onPress={() => this._panel.show()}>
-                  <Image source={require('./images/user.png')} />
-                </TouchableOpacity>
-                <View style={{width: width, justifyContent: 'center'}}></View>
-                <View
-                  style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-                  <SearchCard
-                    setSearch={setSearchData}
-                    data={searchData}
-                    routeTo={searchThis}
-                  />
-                  <View style={styles.containerText}>
-                    <View style={styles.line}></View>
-                    <Text style={styles.featuredText}>Featured</Text>
-                  </View>
-                  <View style={{height: 220, marginTop: 20}}>
-                    <ScrollView
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}>
-                      {movies.map((movie) => (
-                        <Category
-                          name={movie.title}
-                          score={movie.rating}
-                          imageUri={
-                            'https://image.tmdb.org/t/p/w500/' + movie.image
-                          }
-                          key={movie.title}
-                          genre={movie.genre}
-                          desc={movie.overview}
-                        />
-                      ))}
-                    </ScrollView>
-                  </View>
+          <ScrollView>
+            <ScrollView scrollEventThrottle={16}>
+              <View style={{flex: 1, backgroundColor: '#1C1C1C', paddingTop: 20}}>
+                <SearchCard
+                  setSearch={setSearchData}
+                  data={searchData}
+                  routeTo={searchThis}
+                />
+                <View style={styles.containerText}>
+                  <View style={styles.line}></View>
+                  <Text style={styles.featuredText}>Featured</Text>
                 </View>
-              </ScrollView>
-              <ScrollView scrollEventThrottle={16}>
-                <View
-                  style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-                  <View style={styles.containerTextSecond}>
-                    <View style={styles.line}></View>
-                    <Text style={styles.newReleasesText}>Now Playing</Text>
-                  </View>
-                  {newMovies.map((movie) => (
-                    <BigMovie
-                      name={movie.title}
-                      score={movie.rating}
-                      imageUri={
-                        'https://image.tmdb.org/t/p/w500/' + movie.image
-                      }
-                      key={movie.id}
-                      id={movie.id}
-                      released={movie.released}
-                      overview={movie.overview}
-                      genre={movie.genre}
-                      desc={movie.overview}
-                    />
-                  ))}
-                </View>
-              </ScrollView>
-            </ScrollView>
-            <SlidingUpPanel ref={(c) => (this._panel = c)}>
-              <View style={styles.container}>
-                <TouchableOpacity
-                  style={styles.closePanel}
-                  onPress={() => this._panel.hide()}>
-                  <Image source={require('./images/cancel.png')} />
-                </TouchableOpacity>
-                <View style={styles.wrapperSlideUp}>
-                  <View style={styles.wrapperInfo}>
-                    <View style={styles.wrapperInfoIcon}>
-                      <Image source={require('./images/user.png')} />
-                    </View>
-                    <View style={styles.wrapperInfoInfo}>
-                      <Text style={styles.wrapperInfoName}>Username</Text>
-                      <Text style={styles.wrapperInfoEmail}>
-                        domain@domain.com
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.wrapperFields}>
-                    <View style={styles.mainFieldBox}>
-                      <View style={styles.inputField}>
-                        <Text style={styles.inputName}>Name</Text>
-                      </View>
-                      <TouchableOpacity style={styles.editIcon}>
-                        <Image
-                          source={require('./images/pencil.png')}
-                          style={styles.imageEdit}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.mainFieldBox}>
-                      <View style={styles.inputField}>
-                        <Text style={styles.inputName}>Password</Text>
-                      </View>
-                      <TouchableOpacity style={styles.editIcon}>
-                        <Image
-                          source={require('./images/pencil.png')}
-                          style={styles.imageEdit}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                <View style={{height: 220, marginTop: 20}}>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    {movies.map((movie) => (
+                      <Category
+                        name={movie.title}
+                        score={movie.rating}
+                        imageUri={
+                          'https://image.tmdb.org/t/p/w500/' + movie.image
+                        }
+                        key={movie.title}
+                        genre={movie.genre}
+                        desc={movie.overview}
+                      />
+                    ))}
+                  </ScrollView>
                 </View>
               </View>
-            </SlidingUpPanel>
-          </View>
+            </ScrollView>
+            <ScrollView scrollEventThrottle={16}>
+              <View style={{flex: 1, backgroundColor: '#1C1C1C', paddingTop: 20}}>
+                <View style={styles.containerTextSecond}>
+                  <View style={styles.line}></View>
+                  <Text style={styles.newReleasesText}>Now Playing</Text>
+                </View>
+                {newMovies.map((movie) => (
+                  <BigMovie
+                    name={movie.title}
+                    score={movie.rating}
+                    imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
+                    key={movie.id}
+                    id={movie.id}
+                    released={movie.released}
+                    overview={movie.overview}
+                    genre={movie.genre}
+                    desc={movie.overview}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          </ScrollView>
         </SafeAreaView>
       </View>
     );
@@ -218,7 +159,7 @@ export const Home = (props) => {
     return (
       <View>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
+        <SafeAreaView style={{height: height, backgroundColor: '#1C1C1C'}}>
           <View
             style={{
               width: width,
@@ -285,13 +226,14 @@ const styles = StyleSheet.create({
   line: {
     width: 70,
     height: 6,
-    backgroundColor: 'orange',
+    backgroundColor: '#F7AA36',
     marginTop: 14,
   },
   featuredText: {
     fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 14,
+    color: 'white',
   },
   searchText: {
     fontSize: 22,
@@ -302,6 +244,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 14,
+    color: 'white',
   },
   icon: {
     backgroundColor: '#e1e6e2',

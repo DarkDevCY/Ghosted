@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -19,8 +21,14 @@ import 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
 
 export const WatchlistCard = (props) => {
-  const [statusOf, setStatus] = useState(false);
-  return (
+    let stats;
+    if (props.watched == 1) {
+        stats = true;
+    } else {
+        stats = false;
+    }
+    const [statusOf, setStatus] = useState(stats);
+    return (
     <View>
       <View style={styles.wrapper}>
         <View style={styles.wrapperImage}>
@@ -60,7 +68,20 @@ export const WatchlistCard = (props) => {
               <Switch
                 trackColor={{false: '#474747', true: '#F7AA36'}}
                 thumbColor={statusOf ? '#474747' : '#FFFFFF'}
-                onValueChange={(val) => setStatus(val)}
+                onValueChange={(val) => {
+                  setStatus(val);
+                  const statusFunc = async () => {
+                    await axios.post(
+                      'http://143.110.173.215:3000/api/updateStatus',
+                      {
+                          statusInfo: val,
+                          uid: await AsyncStorage.getItem('id'),
+                          bid: props.id
+                      },
+                    );
+                  };
+                  statusFunc();
+                }}
                 value={statusOf}
                 style={{transform: [{scaleX: 1.15}, {scaleY: 1.15}]}}
               />

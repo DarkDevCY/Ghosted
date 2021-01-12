@@ -44,13 +44,17 @@ export const SearchCard = (props) => {
             onChangeText={(text) => setSearchInput({value: text})}
             currentlyFocusedInput={true}
             placeholder="Search..."
+            placeholderTextColor='white'
             disabled
           />
           <TouchableOpacity
             onPress={async () => {
-              const searchRes = axios.post('http://143.110.173.215:2005/api/' + props.routeTo, {
-                searchData: searchInput.value
-              });
+              const searchRes = axios.post(
+                'http://143.110.173.215:2005/api/' + props.routeTo,
+                {
+                  searchData: searchInput.value,
+                },
+              );
 
               props.setSearch(
                 searchRes.data.results.map((n) => ({
@@ -67,7 +71,7 @@ export const SearchCard = (props) => {
               height: 45,
               width: 50,
               alignSelf: 'flex-end',
-              backgroundColor: '#03cefc',
+              backgroundColor: '#F7AA36',
               justifyContent: 'center',
               alignContent: 'center',
               alignItems: 'center',
@@ -89,13 +93,14 @@ const styles = StyleSheet.create({
   wrapperSearch: {
     width: width - 120,
     height: 45,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#333333',
     color: 'white',
     marginTop: 20,
     borderRadius: 6,
   },
   textSearch: {
     marginLeft: 25,
+    color: 'white'
   },
 });
 
