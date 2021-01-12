@@ -27,6 +27,8 @@ import 'react-native-gesture-handler';
 import Star from 'react-native-star-view';
 import axios from 'axios';
 
+import TVShows from '../../TVShows'
+
 const {width, height} = Dimensions.get('window');
 
 export const SearchCard = (props) => {
@@ -46,10 +48,9 @@ export const SearchCard = (props) => {
           />
           <TouchableOpacity
             onPress={async () => {
-              const searchRes = await axios.get(
-                'https://api.themoviedb.org/3/search/multi?api_key=&language=en-US&page=1&query=' +
-                  searchInput.value,
-              );
+              const searchRes = axios.post('http://143.110.173.215:2005/api/' + props.routeTo, {
+                searchData: searchInput.value
+              });
 
               props.setSearch(
                 searchRes.data.results.map((n) => ({
@@ -58,7 +59,6 @@ export const SearchCard = (props) => {
                   rating: n.vote_average / 2,
                   image: n.poster_path,
                   released: n.release_date,
-                  searched: searchInput.value,
                 })),
               );
               setSearchInput({value: ''});

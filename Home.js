@@ -43,12 +43,14 @@ export const Home = (props) => {
   const date = new Date();
   const [movies, setMovies] = useState([]);
   const [searchData, setSearchData] = useState([]);
+  const [newMovies, setNewMovies] = useState([]);
+  const searchThis = 'searchMovies';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          'https://api.themoviedb.org/3/movie/top_rated?api_key=',
+        const response = await axios.post(
+          'http://143.110.173.215:2005/api/popMovies',
         );
         setMovies(
           response.data.results.map((m) => ({
@@ -56,6 +58,8 @@ export const Home = (props) => {
             title: m.title,
             rating: m.vote_average / 2,
             image: m.poster_path,
+            genre: m.genre_ids,
+            overview: m.overview,
           })),
         );
       } catch (e) {
@@ -64,13 +68,11 @@ export const Home = (props) => {
     };
     fetchData();
   }, []);
-
-  const [newMovies, setNewMovies] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataNew = async () => {
       try {
-        const responseNew = await axios.get(
-          'https://api.themoviedb.org/3/movie/now_playing?api_key=',
+        const responseNew = await axios.post(
+          'http://143.110.173.215:2005/api/newMovies',
         );
         setNewMovies(
           responseNew.data.results.map((n) => ({
@@ -80,13 +82,15 @@ export const Home = (props) => {
             image: n.poster_path,
             released: n.release_date,
             overview: n.overview,
+            genre: n.genre_ids,
+            overview: n.overview
           })),
         );
       } catch (e) {
         console.log(e);
       }
     };
-    fetchData();
+    fetchDataNew();
   }, []);
 
   if (searchData.length == 0) {
@@ -106,7 +110,11 @@ export const Home = (props) => {
                 <View style={{width: width, justifyContent: 'center'}}></View>
                 <View
                   style={{flex: 1, backgroundColor: 'white', paddingTop: 20}}>
-                  <SearchCard setSearch={setSearchData} data={searchData} />
+                  <SearchCard
+                    setSearch={setSearchData}
+                    data={searchData}
+                    routeTo={searchThis}
+                  />
                   <View style={styles.containerText}>
                     <View style={styles.line}></View>
                     <Text style={styles.featuredText}>Featured</Text>
@@ -123,6 +131,8 @@ export const Home = (props) => {
                             'https://image.tmdb.org/t/p/w500/' + movie.image
                           }
                           key={movie.title}
+                          genre={movie.genre}
+                          desc={movie.overview}
                         />
                       ))}
                     </ScrollView>
@@ -143,9 +153,12 @@ export const Home = (props) => {
                       imageUri={
                         'https://image.tmdb.org/t/p/w500/' + movie.image
                       }
-                      key={movie.title}
-                      released={date.toLocaleDateString(movie.released)}
+                      key={movie.id}
+                      id={movie.id}
+                      released={movie.released}
                       overview={movie.overview}
+                      genre={movie.genre}
+                      desc={movie.overview}
                     />
                   ))}
                 </View>

@@ -46,53 +46,52 @@ export const TVShows = (props) => {
   const date = new Date();
   const [TVShows, setTVShows] = useState([]);
   const [searchData, setSearchData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tvShowsResponse = await axios.get(
-          'https://api.themoviedb.org/3/tv/popular?api_key=&language=en-US',
-        );
-        setTVShows(
-          tvShowsResponse.data.results.map((n) => ({
-            id: n.id,
-            title: n.name,
-            rating: n.vote_average / 2,
-            image: n.poster_path,
-            released: n.first_air_date,
-          })),
-        );
-        //console.log(tvShowsResponse);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchData();
-  }, []);
-
   const [AiringToday, setAiringToday] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tvShowsAiringTodayResponse = await axios.get(
-          'https://api.themoviedb.org/3/tv/airing_today?api_key=&language=en-US',
-        );
-        setAiringToday(
-          tvShowsAiringTodayResponse.data.results.map((n) => ({
-            id: n.id,
-            title: n.name,
-            rating: n.vote_average / 2,
-            image: n.poster_path,
-            released: n.first_air_date,
-          })),
-        );
-        //console.log(tvShowsResponse);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    fetchData();
-  }, []);
+  const searchThis = 'searchTV';
+
+    useEffect(() => {
+      const fetchDataPopS = async () => {
+        try {
+          const responsePopTV = await axios.post(
+            'http://143.110.173.215:2005/api/tvShows',
+          );
+          setTVShows(
+            responsePopTV.data.results.map((n) => ({
+              id: n.id,
+              title: n.name,
+              rating: n.vote_average / 2,
+              image: n.poster_path,
+              released: n.first_air_date,
+            })),
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      fetchDataPopS();
+    }, []);
+  
+    useEffect(() => {
+      const fetchDataNewS = async () => {
+        try {
+          const responseAirTV = await axios.post(
+            'http://143.110.173.215:2005/api/airingTV',
+          );
+          setAiringToday(
+            responseAirTV.data.results.map((n) => ({
+              id: n.id,
+              title: n.name,
+              rating: n.vote_average / 2,
+              image: n.poster_path,
+              released: n.first_air_date,
+            })),
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      fetchDataNewS();
+    }, []);
 
   if (searchData.length == 0) {
     return (
@@ -104,7 +103,7 @@ export const TVShows = (props) => {
             <ScrollView>
               <View
                 style={{width: width, justifyContent: 'center', marginTop: 35}}>
-                <SearchCard setSearch={setSearchData} data={searchData} />
+                <SearchCard setSearch={setSearchData} data={searchData} routeTo={searchThis} />
               </View>
               <View style={styles.wrapperSectionText}>
                 <View style={styles.line}></View>
@@ -134,6 +133,7 @@ export const TVShows = (props) => {
                   released={date.toLocaleDateString(movie.released)}
                   imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
                   key={movie.title}
+                  id={movie.id}
                 />
               ))}
             </ScrollView>

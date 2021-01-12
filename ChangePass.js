@@ -10,16 +10,24 @@ import {
   TouchableOpacity,
   Dimensions,
   Button,
+  Modal,
+  Image,
 } from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
+const {width, height} = Dimensions.get('window');
+
 export const ChangePass = (props) => {
   const [pass, setPass] = useState({value: '', error: ''});
   const [rePass, setRePass] = useState({value: '', error: ''});
-  const [token, setToken] = useState({ value: '', error: '' });
+  const [token, setToken] = useState({value: '', error: ''});
+  const [modalVisibleSuccess, setModalVisibleSuccess] = useState(false);
+  const [modalVisibleError, setModalVisibleError] = useState(false);
+  const [modalNotSamePass, setModalNotSamePass] = useState(false);
+  const [emptyField, setEmptyField] = useState(false);
 
   return (
     <>
@@ -60,7 +68,7 @@ export const ChangePass = (props) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (token.value != "" && pass.value != "" && rePass.value != "") {
+              if (token.value != '' && pass.value != '' && rePass.value != '') {
                 let tokenAccess = token.value;
                 let password = pass.value;
                 let repeatPassword = rePass.value;
@@ -68,7 +76,7 @@ export const ChangePass = (props) => {
                 if (password == repeatPassword) {
                   async function componentDidMount() {
                     try {
-                      await fetch('/forgot/verify', {
+                      await fetch('http://143.110.173.215:3000/forgot/verify', {
                         method: 'POST',
                         headers: {
                           Accept: 'application/json',
@@ -79,18 +87,45 @@ export const ChangePass = (props) => {
                           repeatPassword: repeatPassword,
                           token: tokenAccess,
                         }),
-                      });
+                      })
+                        .then((response) => response.json())
+                        .then((data) => {
+                          console.log(data)
+                          if (data.statusC == '200') {
+                            setModalVisibleSuccess(true);
+                            setTimeout(function () {
+                              setModalVisibleSuccess(false);
+                              setTimeout(function () {
+                                props.navigation.navigate('SignIn');
+                              }, 1000);
+                            }, 2000);
+                          }
+                        });
                     } catch (e) {
                       console.log(e);
                     }
                   }
                   componentDidMount();
                   props.navigation.navigate('SignIn');
-                } else {
-                  console.log(pass, rePass, 'They are not the same!');
+                } else if (pass.value != rePass.value) {
+                  setModalNotSamePass(true);
+
+                  setTimeout(function () {
+                    setModalNotSamePass(false);
+                  }, 2000);
                 }
-              } else if (token.value == "") {
-                console.log("Token is empty");
+              } else if (token.value == '') {
+                setModalVisibleError(true);
+
+                setTimeout(function () {
+                  setModalVisibleError(false);
+                }, 2000);
+              } else if (pass.value == '' || rePass.value == '') {
+                setEmptyField(true);
+
+                setTimeout(function () {
+                  setEmptyField(false);
+                }, 2000);
               }
             }}>
             <Text style={styles.signText}>Submit</Text>
@@ -100,6 +135,105 @@ export const ChangePass = (props) => {
             onPress={() => props.navigation.navigate('SignIn')}>
             Back to Login
           </Text>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={modalVisibleSuccess}
+            style={{
+              width: width - 100,
+              height: 50,
+            }}>
+            <View style={styles.mainModalWrapper}>
+              <View style={styles.wrapper}>
+                <View style={styles.icon}>
+                  <Image
+                    source={require('./images/checkmark.png')}
+                    style={styles.image}
+                  />
+                </View>
+                <View style={styles.wrapperText}>
+                  <Text style={styles.text}>
+                    Password was changed successfully.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={modalVisibleError}
+            style={{
+              width: width - 100,
+              height: 50,
+            }}>
+            <View style={styles.mainModalWrapper}>
+              <View style={styles.wrapperError}>
+                <View style={styles.icon}>
+                  <Image
+                    source={require('./images/cancelWhite.png')}
+                    style={styles.imageE}
+                  />
+                </View>
+                <View style={styles.wrapperText}>
+                  <Text style={styles.textError}>
+                    Error: The token is empty or invalid.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={modalNotSamePass}
+            style={{
+              width: width - 100,
+              height: 50,
+            }}>
+            <View style={styles.mainModalWrapper}>
+              <View style={styles.wrapperError}>
+                <View style={styles.icon}>
+                  <Image
+                    source={require('./images/cancelWhite.png')}
+                    style={styles.imageE}
+                  />
+                </View>
+                <View style={styles.wrapperText}>
+                  <Text style={styles.textError}>
+                    Error: The passwords do not match.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={emptyField}
+            style={{
+              width: width - 100,
+              height: 50,
+            }}>
+            <View style={styles.mainModalWrapper}>
+              <View style={styles.wrapperError}>
+                <View style={styles.icon}>
+                  <Image
+                    source={require('./images/cancelWhite.png')}
+                    style={styles.imageE}
+                  />
+                </View>
+                <View style={styles.wrapperText}>
+                  <Text style={styles.textError}>
+                    Error: One of the password fields
+                  </Text>
+                  <Text style={styles.textError}>
+                    is empty.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Modal>
         </View>
       </SafeAreaView>
     </>
@@ -183,5 +317,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     marginTop: 100,
+  },
+  wrapper: {
+    width: width - 100,
+    backgroundColor: '#16F6A6',
+    borderRadius: 6,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  wrapperError: {
+    width: width - 100,
+    backgroundColor: '#F63E16',
+    borderRadius: 6,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 24,
+  },
+  text: {
+    fontSize: 15,
+    color: '#333',
+  },
+  textError: {
+    fontSize: 15,
+    color: '#fff',
+  },
+  mainModalWrapper: {
+    width: width,
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 60,
+  },
+  imageE: {
+    marginTop: 5,
   },
 });

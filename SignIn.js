@@ -12,11 +12,10 @@ import {
   Button,
 } from 'react-native';
 
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-
-import {Home} from './Home';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -53,7 +52,7 @@ export const signIn = (props) => {
               console.log(name, pass);
 
               async function loginRequest() {
-                const res = await fetch('/login', {
+                const res = await fetch('http://143.110.173.215:3000/login', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
@@ -65,6 +64,8 @@ export const signIn = (props) => {
                   }),
                 });
                 const data = await res.json();
+                await AsyncStorage.setItem('email', data.email);
+                await AsyncStorage.setItem('id', JSON.stringify(data.id));
                 await AsyncStorage.setItem('accessToken', data.token);
 
                 if (data.login === true) {

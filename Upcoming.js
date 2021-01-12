@@ -45,12 +45,13 @@ export const Upcoming = (props) => {
   const date = new Date();
   const [upcoming, setComing] = useState([]);
   const [searchData, setSearchData] = useState([]);
+  const searchThis = 'searchMovies';
 
   useEffect(() => {
-    const fetchData = async () => {
+    fetchDataUpcoming = async () => {
       try {
-        const upcomingResponse = await axios.get(
-          'https://api.themoviedb.org/3/movie/upcoming?api_key=',
+        const upcomingResponse = await axios.post(
+          'http://143.110.173.215:2005/api/upcoming',
         );
         setComing(
           upcomingResponse.data.results.map((n) => ({
@@ -62,11 +63,12 @@ export const Upcoming = (props) => {
             overview: n.overview,
           })),
         );
+        setRefreshing(false);
       } catch (e) {
         console.log(e);
       }
     };
-    fetchData();
+    fetchDataUpcoming();
   }, []);
 
   if (searchData.length == 0) {
@@ -79,7 +81,11 @@ export const Upcoming = (props) => {
             <ScrollView>
               <View
                 style={{width: width, justifyContent: 'center', marginTop: 35}}>
-                <SearchCard setSearch={setSearchData} data={searchData} />
+                <SearchCard
+                  setSearch={setSearchData}
+                  data={searchData}
+                  routeTo={searchThis}
+                />
               </View>
               <View style={styles.wrapperSectionText}>
                 <View style={styles.line}></View>

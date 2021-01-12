@@ -65,7 +65,7 @@ export const Register = (props) => {
 
               async function componentDidMount() {
                 try {
-                  await fetch('/register', {
+                  await fetch('http://143.110.173.215:3000/register', {
                     method: 'POST',
                     headers: {
                       Accept: 'application/json',
