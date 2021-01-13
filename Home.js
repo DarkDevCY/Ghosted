@@ -143,7 +143,7 @@ export const Home = (props) => {
                     imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
                     key={movie.id}
                     id={movie.id}
-                    released={movie.released}
+                    released={movie.released.split("-")}
                     overview={movie.overview}
                     genre={movie.genre}
                     desc={movie.overview}

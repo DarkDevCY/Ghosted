@@ -50,10 +50,10 @@ export const UpcomingCard = (props) => {
         <View style={styles.wrapperItems}>
           <Text style={styles.mName}>{props.name}</Text>
           <View style={{flexDirection: 'row', marginLeft: 14, marginTop: 10}}>
-            <Text style={{fontWeight: 'bold', fontSize: 15}}>
+            <Text style={{fontWeight: 'bold', fontSize: 16, color: 'white'}}>
               Releasing on:{' '}
             </Text>
-            <Text style={styles.createdOn}>{props.releasing}</Text>
+            <Text style={styles.createdOn}>{props.releasing[2] + "/" + props.releasing[1] + "/" + props.releasing[0]}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 200,
     width: width - 40,
-    backgroundColor: '#e1e6e2',
+    backgroundColor: '#333333',
     borderRadius: 6,
     alignSelf: 'center',
-    marginTop: 42,
+    marginTop: 25,
   },
   wrapperItemsDesc: {
     justifyContent: 'space-between',
@@ -82,16 +82,11 @@ const styles = StyleSheet.create({
     fontSize: 21,
     marginLeft: 14,
     marginTop: 46,
-  },
-  mDescription: {
-    marginLeft: 14,
-    marginTop: 7,
-  },
-  wrapperMainItems: {
-    alignSelf: 'flex-end',
+    color: 'white'
   },
   createdOn: {
     marginTop: 3,
+    color: 'white'
   },
 });
 

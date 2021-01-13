@@ -99,7 +99,7 @@ export const TVShows = (props) => {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
           <View
-            style={{width: width, height: height, backgroundColor: 'white'}}>
+            style={{width: width, height: height, backgroundColor: '#1C1C1C'}}>
             <ScrollView>
               <View
                 style={{width: width, justifyContent: 'center', marginTop: 35}}>
@@ -130,7 +130,7 @@ export const TVShows = (props) => {
                 <TVCardBig
                   name={movie.title}
                   score={movie.rating}
-                  released={date.toLocaleDateString(movie.released)}
+                  released={movie.released.split("-")}
                   imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
                   key={movie.title}
                   id={movie.id}
@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 14,
+    color: 'white'
   },
   line: {
     width: 70,

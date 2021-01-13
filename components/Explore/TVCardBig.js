@@ -125,13 +125,28 @@ export const TVCardBig = (props) => {
           <Text style={styles.mName}>{props.name}</Text>
           <View style={styles.wrapperInfo}>
             <Star score={props.score} style={styles.starStyle} size={10} />
-            <Text style={{paddingLeft: 12}}>{props.score}</Text>
+            <Text
+              style={{
+                paddingLeft: 12,
+                fontWeight: 'bold',
+                color: '#F7AA36',
+                fontSize: 16,
+              }}>
+              {props.score}
+            </Text>
           </View>
           <View style={{flexDirection: 'row', marginLeft: 14, marginTop: 10}}>
-            <Text style={{fontWeight: 'bold', fontSize: 17}}>
+            <Text style={{fontWeight: 'bold', fontSize: 17, color: 'white'}}>
               Released on:{' '}
             </Text>
-            <Text style={styles.createdOn}> {props.released}</Text>
+            <Text style={styles.createdOn}>
+              {' '}
+              {props.released[2] +
+                '/' +
+                props.released[1] +
+                '/' +
+                props.released[0]}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -337,7 +352,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 200,
     width: width - 40,
-    backgroundColor: '#e1e6e2',
+    backgroundColor: '#333333',
     borderRadius: 6,
     alignSelf: 'center',
     marginTop: 22,
@@ -370,6 +385,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 14,
     marginTop: 46,
+    color: 'white'
   },
   mDescription: {
     marginLeft: 14,
@@ -389,6 +405,7 @@ const styles = StyleSheet.create({
   },
   createdOn: {
     marginTop: 3,
+    color: 'white'
   },
   imageInfo: {
     width: 190,

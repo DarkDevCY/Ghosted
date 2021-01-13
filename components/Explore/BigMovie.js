@@ -50,6 +50,8 @@ export const BigMovie = (props) => {
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
+  let isBusy = false;
+
   return (
     <View>
       <TouchableOpacity
@@ -95,7 +97,6 @@ export const BigMovie = (props) => {
               mid: props.id,
             },
           );
-          console.log(ifBookmarked.data);
 
           if (ifBookmarked.data.booked == true) {
             setToggleCheckBox(false);
@@ -135,7 +136,7 @@ export const BigMovie = (props) => {
             <Text style={{fontWeight: 'bold', fontSize: 17, color: 'white'}}>
               Released on:{' '}
             </Text>
-            <Text style={styles.createdOn}> {props.released}</Text>
+            <Text style={styles.createdOn}> {props.released[2] + "/" + props.released[1] + "/" + props.released[0]}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -269,12 +270,12 @@ export const BigMovie = (props) => {
               <TouchableOpacity
                 onPress={async () => {
                   setToggleCheckBox(!toggleCheckBox);
-                  let emailID = await AsyncStorage.getItem('email');
+                  let uuid = await AsyncStorage.getItem('id');
                   const insertBookmark = await axios.post(
                     'http://143.110.173.215:3000/api/bookmarked',
                     {
                       bookmarkID: props.id,
-                      email: emailID,
+                      uid: uuid,
                       bookmarked: toggleCheckBox,
                     },
                   );
@@ -376,7 +377,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 14,
     marginTop: 46,
-    color: 'white'
+    color: 'white',
   },
   mDescription: {
     marginLeft: 14,
@@ -397,7 +398,7 @@ const styles = StyleSheet.create({
   },
   createdOn: {
     marginTop: 3,
-    color: 'white'
+    color: 'white',
   },
   imageInfo: {
     width: 190,
@@ -469,10 +470,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     marginLeft: 18,
-    borderRadius: 60
+    borderRadius: 60,
   },
   wrapperCast: {
-    marginTop: -55
+    marginTop: -55,
   },
 });
 

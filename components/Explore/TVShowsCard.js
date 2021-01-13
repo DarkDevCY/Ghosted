@@ -13,20 +13,11 @@ import {
   Image,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 import Star from 'react-native-star-view';
-import SlidingUpPanel from 'rn-sliding-up-panel';
 
 const {width, height} = Dimensions.get('window');
 
@@ -50,7 +41,9 @@ export const TVShowsCard = (props) => {
         <Text style={styles.mName}>{props.name}</Text>
         <View style={styles.wrapperInfo}>
           <Star score={props.score} style={styles.starStyle} size={10} />
-          <Text style={{paddingLeft: 10}}>{props.score}</Text>
+          <Text style={{paddingLeft: 6, color: '#F7AA36', fontSize: 16, fontWeight: 'bold'}}>
+            {props.score}
+          </Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -59,12 +52,10 @@ export const TVShowsCard = (props) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    backgroundColor: '#e1e6e2',
+    backgroundColor: '#333333',
     height: 250,
     width: 156,
     marginLeft: 20,
-    borderWidth: 0.5,
-    borderColor: '#dddddd',
     borderRadius: 8,
   },
   mName: {

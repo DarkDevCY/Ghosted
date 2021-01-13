@@ -77,7 +77,7 @@ export const Upcoming = (props) => {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
           <View
-            style={{width: width, height: height, backgroundColor: 'white'}}>
+            style={{width: width, height: height, backgroundColor: '#1C1C1C'}}>
             <ScrollView>
               <View
                 style={{width: width, justifyContent: 'center', marginTop: 35}}>
@@ -95,7 +95,7 @@ export const Upcoming = (props) => {
                 <UpcomingCard
                   imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
                   name={movie.title}
-                  releasing={date.toLocaleDateString(movie.releasing)}
+                  releasing={movie.releasing.split("-")}
                   key={movie.title}
                 />
               ))}
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 14,
+    color: 'white'
   },
   containerText: {
     flexDirection: 'row',
