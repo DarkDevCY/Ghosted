@@ -100,7 +100,8 @@ export const Home = (props) => {
         <SafeAreaView>
           <ScrollView>
             <ScrollView scrollEventThrottle={16}>
-              <View style={{flex: 1, backgroundColor: '#1C1C1C', paddingTop: 20}}>
+              <View
+                style={{flex: 1, backgroundColor: '#1C1C1C', paddingTop: 20}}>
                 <SearchCard
                   setSearch={setSearchData}
                   data={searchData}
@@ -124,6 +125,7 @@ export const Home = (props) => {
                         key={movie.title}
                         genre={movie.genre}
                         desc={movie.overview}
+                        id={movie.id}
                       />
                     ))}
                   </ScrollView>
@@ -131,7 +133,8 @@ export const Home = (props) => {
               </View>
             </ScrollView>
             <ScrollView scrollEventThrottle={16}>
-              <View style={{flex: 1, backgroundColor: '#1C1C1C', paddingTop: 20}}>
+              <View
+                style={{flex: 1, backgroundColor: '#1C1C1C', paddingTop: 20}}>
                 <View style={styles.containerTextSecond}>
                   <View style={styles.line}></View>
                   <Text style={styles.newReleasesText}>Now Playing</Text>
@@ -143,7 +146,7 @@ export const Home = (props) => {
                     imageUri={'https://image.tmdb.org/t/p/w500/' + movie.image}
                     key={movie.id}
                     id={movie.id}
-                    released={movie.released.split("-")}
+                    released={movie.released.split('-')}
                     overview={movie.overview}
                     genre={movie.genre}
                     desc={movie.overview}
@@ -164,7 +167,7 @@ export const Home = (props) => {
             style={{
               width: width,
               height: height,
-              backgroundColor: 'white',
+              backgroundColor: '#1c1c1c',
             }}>
             <ScrollView>
               <TouchableOpacity
@@ -176,15 +179,22 @@ export const Home = (props) => {
                   marginBottom: 7,
                 }}>
                 <Image
-                  source={require('./images/left-arrow.png')}
+                  source={require('./images/left-arrowWhite.png')}
                   style={{width: 20, height: 20, marginRight: 10}}
                 />
-                <Text style={{color: '#333333', fontSize: 16}}>Back</Text>
+                <Text style={{color: '#fff', fontSize: 16}}>Back</Text>
               </TouchableOpacity>
               <View style={styles.containerText}>
                 <View style={styles.line}></View>
                 <Text style={styles.searchText}>Search Results for: </Text>
-                <Text style={styles.searchInputText}>Bloodshot</Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginLeft: 4,
+                    marginTop: 4,
+                    color: 'white',
+                  }}>
+                </Text>
               </View>
               <ScrollView scrollEventThrottle={16}>
                 {searchData.map((search) => (
@@ -192,7 +202,7 @@ export const Home = (props) => {
                     name={search.title}
                     score={search.rating}
                     imageUri={'https://image.tmdb.org/t/p/w500/' + search.image}
-                    released={date.toLocaleDateString(search.released)}
+                    released={search.released}
                     key={search.title}
                   />
                 ))}
@@ -239,6 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginLeft: 14,
+    color: 'white',
   },
   newReleasesText: {
     fontSize: 25,

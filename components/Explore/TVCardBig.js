@@ -32,6 +32,7 @@ import axios from 'axios';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ReadMore from 'react-native-read-more-text';
 
 const {width, height} = Dimensions.get('window');
 
@@ -53,6 +54,22 @@ export const TVCardBig = (props) => {
   const [createdBy, setCreatedBy] = useState([]);
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+  _renderTruncatedFooter = (handlePress) => {
+    return (
+      <Text style={{color: '#548be3', marginTop: 5}} onPress={handlePress}>
+        Read more
+      </Text>
+    );
+  };
+
+  _renderRevealedFooter = (handlePress) => {
+    return (
+      <Text style={{color: '#548be3', marginTop: 5}} onPress={handlePress}>
+        Show less
+      </Text>
+    );
+  };
 
   return (
     <View>
@@ -82,22 +99,23 @@ export const TVCardBig = (props) => {
             })),
           );
           setSeasons(getTVData.data[0].seasons.length);
-          setCountry(getTVData.data[0].production_countries[0].iso_3166_1);
+          if (getTVData.data[0].production_countries[0] !== undefined)
+            setCountry(getTVData.data[0].production_countries[0].iso_3166_1);
+          else setCountry('N/A');
           setYear(getTVData.data[0].first_air_date.split('-'));
           setLang(getTVData.data[0].spoken_languages[0].english_name);
           setTag(getTVData.data[0].tagline);
           setKey(getTVData.data[1].results[0].key);
           setOverview(getTVData.data[0].overview);
-          setLastAir(getTVData.data[0].last_air_date);
-          setNextAir(getTVData.data[0].next_episode_to_air.air_date);
-          setProduction(getTVData.data[0].in_production);
+          setLastAir(getTVData.data[0].last_air_date.split('-'));
+          setNextAir(getTVData.data[0].next_episode_to_air.air_date.split('-'));
           setLength(getTVData.data[0].episode_run_time);
 
           const ifBookmarked = await axios.post(
-            'http://143.110.173.215:3000/api/checkBookmark',
+            'http://143.110.173.215:3000/api/checkBookmarkTV',
             {
               uid: uid,
-              mid: props.id,
+              tvid: props.id,
             },
           );
 
@@ -179,6 +197,32 @@ export const TVCardBig = (props) => {
               <Text style={styles.textInfo}>{props.name}</Text>
               <Text style={styles.langInfo}>{'(' + lang + ')'}</Text>
               <Text style={styles.tagline}>{tag}</Text>
+              <TouchableOpacity
+                onPress={async () => {
+                  setToggleCheckBox(!toggleCheckBox);
+                  let uuid = await AsyncStorage.getItem('id');
+                  const insertBookmark = await axios.post(
+                    'http://143.110.173.215:3000/api/bookmarkedTV',
+                    {
+                      tvID: props.id,
+                      uid: uuid,
+                      bookmarked: toggleCheckBox,
+                    },
+                  );
+                }}
+                style={styles.bookmarker}>
+                {toggleCheckBox == true ? (
+                  <Image
+                    style={styles.bookmarkerImage}
+                    source={require('../../images/bookmark-empty.png')}
+                  />
+                ) : (
+                  <Image
+                    style={styles.bookmarkerImage}
+                    source={require('../../images/bookmark-full.png')}
+                  />
+                )}
+              </TouchableOpacity>
               <View
                 style={{
                   flexDirection: 'row',
@@ -258,9 +302,14 @@ export const TVCardBig = (props) => {
                     alignSelf: 'center',
                     marginBottom: 25,
                   }}>
-                  <Text style={{letterSpacing: 0.3, color: 'white'}}>
-                    {overview}
-                  </Text>
+                  <ReadMore
+                    numberOfLines={3}
+                    renderTruncatedFooter={_renderTruncatedFooter}
+                    renderRevealedFooter={_renderRevealedFooter}>
+                    <Text style={{letterSpacing: 0.3, color: 'white'}}>
+                      {overview}
+                    </Text>
+                  </ReadMore>
                 </View>
               </View>
               <View style={styles.wrapperMoreInfo}>
@@ -271,7 +320,9 @@ export const TVCardBig = (props) => {
                       style={styles.imageCal}
                     />
                     <Text style={styles.textDates}>Last episode:</Text>
-                    <Text style={styles.dates}>{lastAir}</Text>
+                    <Text style={styles.dates}>
+                      {lastAir[2] + '/' + lastAir[1] + '/' + lastAir[0]}
+                    </Text>
                   </View>
                   <View style={styles.wrapperLast}>
                     <Image
@@ -279,7 +330,9 @@ export const TVCardBig = (props) => {
                       style={styles.imageCal}
                     />
                     <Text style={styles.textDates}>Next episode:</Text>
-                    <Text style={styles.dates}>{nextAir}</Text>
+                    <Text style={styles.dates}>
+                      {nextAir[2] + '/' + nextAir[1] + '/' + nextAir[0]}
+                    </Text>
                   </View>
                 </View>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -313,32 +366,6 @@ export const TVCardBig = (props) => {
                   style={styles.ytPlayer}
                 />
               </View>
-              <TouchableOpacity
-                onPress={async () => {
-                  setToggleCheckBox(!toggleCheckBox);
-                  let emailID = await AsyncStorage.getItem('email');
-                  const insertBookmark = await axios.post(
-                    'http://143.110.173.215:3000/api/bookmarked',
-                    {
-                      bookmarkID: props.id,
-                      email: emailID,
-                      bookmarked: toggleCheckBox,
-                    },
-                  );
-                }}
-                style={styles.bookmarker}>
-                {toggleCheckBox == true ? (
-                  <Image
-                    style={styles.bookmarkerImage}
-                    source={require('../../images/bookmark-empty.png')}
-                  />
-                ) : (
-                  <Image
-                    style={styles.bookmarkerImage}
-                    source={require('../../images/bookmark-full.png')}
-                  />
-                )}
-              </TouchableOpacity>
             </LinearGradient>
           </View>
         </ScrollView>
@@ -385,7 +412,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 14,
     marginTop: 46,
-    color: 'white'
+    color: 'white',
   },
   mDescription: {
     marginLeft: 14,
@@ -405,7 +432,7 @@ const styles = StyleSheet.create({
   },
   createdOn: {
     marginTop: 3,
-    color: 'white'
+    color: 'white',
   },
   imageInfo: {
     width: 190,
@@ -467,7 +494,7 @@ const styles = StyleSheet.create({
   bookmarker: {
     width: 50,
     height: 50,
-    top: -780,
+    top: -25,
     left: 360,
   },
   bookmarkerImage: {
@@ -480,7 +507,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     marginTop: 30,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   wrapperLast: {
     backgroundColor: '#333',
@@ -491,7 +518,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    marginBottom: 16
+    marginBottom: 16,
   },
   textDates: {
     color: 'white',
@@ -506,11 +533,11 @@ const styles = StyleSheet.create({
   lengthText: {
     color: 'white',
     fontSize: 15,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   imageCal: {
     width: 20,
-    height: 20
+    height: 20,
   },
 });
 

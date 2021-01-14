@@ -33,6 +33,7 @@ import axios from 'axios';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ReadMore from 'react-native-read-more-text';
 
 const {width, height} = Dimensions.get('window');
 
@@ -50,7 +51,21 @@ export const BigMovie = (props) => {
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
-  let isBusy = false;
+  _renderTruncatedFooter = (handlePress) => {
+    return (
+      <Text style={{color: '#548be3', marginTop: 5}} onPress={handlePress}>
+        Read more
+      </Text>
+    );
+  };
+
+  _renderRevealedFooter = (handlePress) => {
+    return (
+      <Text style={{color: '#548be3', marginTop: 5}} onPress={handlePress}>
+        Show less
+      </Text>
+    );
+  };
 
   return (
     <View>
@@ -136,7 +151,18 @@ export const BigMovie = (props) => {
             <Text style={{fontWeight: 'bold', fontSize: 17, color: 'white'}}>
               Released on:{' '}
             </Text>
-            <Text style={styles.createdOn}> {props.released[2] + "/" + props.released[1] + "/" + props.released[0]}</Text>
+            {props.released[2] !== undefined ? (
+              <Text style={styles.createdOn}>
+                {' '}
+                {props.released[2] +
+                  '/' +
+                  props.released[1] +
+                  '/' +
+                  props.released[0]}
+              </Text>
+            ) : (
+              <Text style={styles.createdOn}>Not available</Text>
+            )}
           </View>
         </View>
       </TouchableOpacity>
@@ -169,6 +195,32 @@ export const BigMovie = (props) => {
               <Text style={styles.textInfo}>{props.name}</Text>
               <Text style={styles.langInfo}>{'(' + lang + ')'}</Text>
               <Text style={styles.tagline}>{tag}</Text>
+              <TouchableOpacity
+                onPress={async () => {
+                  setToggleCheckBox(!toggleCheckBox);
+                  let uuid = await AsyncStorage.getItem('id');
+                  const insertBookmark = await axios.post(
+                    'http://143.110.173.215:3000/api/bookmarked',
+                    {
+                      bookmarkID: props.id,
+                      uid: uuid,
+                      bookmarked: toggleCheckBox,
+                    },
+                  );
+                }}
+                style={styles.bookmarker}>
+                {toggleCheckBox == true ? (
+                  <Image
+                    style={styles.bookmarkerImage}
+                    source={require('../../images/bookmark-empty.png')}
+                  />
+                ) : (
+                  <Image
+                    style={styles.bookmarkerImage}
+                    source={require('../../images/bookmark-full.png')}
+                  />
+                )}
+              </TouchableOpacity>
               <View
                 style={{
                   flexDirection: 'row',
@@ -250,9 +302,14 @@ export const BigMovie = (props) => {
                     alignSelf: 'center',
                     marginBottom: 25,
                   }}>
-                  <Text style={{letterSpacing: 0.3, color: 'white'}}>
-                    {props.desc}
-                  </Text>
+                  <ReadMore
+                    numberOfLines={3}
+                    renderTruncatedFooter={_renderTruncatedFooter}
+                    renderRevealedFooter={_renderRevealedFooter}>
+                    <Text style={{letterSpacing: 0.3, color: 'white'}}>
+                      {props.desc}
+                    </Text>
+                  </ReadMore>
                 </View>
               </View>
               <View style={styles.playerWrapper}>
@@ -267,32 +324,6 @@ export const BigMovie = (props) => {
                   style={styles.ytPlayer}
                 />
               </View>
-              <TouchableOpacity
-                onPress={async () => {
-                  setToggleCheckBox(!toggleCheckBox);
-                  let uuid = await AsyncStorage.getItem('id');
-                  const insertBookmark = await axios.post(
-                    'http://143.110.173.215:3000/api/bookmarked',
-                    {
-                      bookmarkID: props.id,
-                      uid: uuid,
-                      bookmarked: toggleCheckBox,
-                    },
-                  );
-                }}
-                style={styles.bookmarker}>
-                {toggleCheckBox == true ? (
-                  <Image
-                    style={styles.bookmarkerImage}
-                    source={require('../../images/bookmark-empty.png')}
-                  />
-                ) : (
-                  <Image
-                    style={styles.bookmarkerImage}
-                    source={require('../../images/bookmark-full.png')}
-                  />
-                )}
-              </TouchableOpacity>
               <View style={styles.wrapperCast}>
                 <Text
                   style={{
@@ -459,7 +490,7 @@ const styles = StyleSheet.create({
   bookmarker: {
     width: 50,
     height: 50,
-    top: -height + 140,
+    top: -25,
     left: width - 40,
   },
   bookmarkerImage: {

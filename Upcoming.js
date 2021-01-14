@@ -63,7 +63,6 @@ export const Upcoming = (props) => {
             overview: n.overview,
           })),
         );
-        setRefreshing(false);
       } catch (e) {
         console.log(e);
       }
@@ -113,7 +112,7 @@ export const Upcoming = (props) => {
             style={{
               width: width,
               height: height,
-              backgroundColor: 'white',
+              backgroundColor: '#1c1c1c',
             }}>
             <ScrollView>
               <TouchableOpacity
@@ -125,15 +124,14 @@ export const Upcoming = (props) => {
                   marginBottom: 7,
                 }}>
                 <Image
-                  source={require('./images/left-arrow.png')}
+                  source={require('./images/left-arrowWhite.png')}
                   style={{width: 20, height: 20, marginRight: 10}}
                 />
-                <Text style={{color: '#333333', fontSize: 16}}>Back</Text>
+                <Text style={{color: '#fff', fontSize: 16}}>Back</Text>
               </TouchableOpacity>
               <View style={styles.containerText}>
                 <View style={styles.line}></View>
                 <Text style={styles.searchText}>Search Results for: </Text>
-                <Text style={styles.searchInputText}>Bloodshot</Text>
               </View>
               <ScrollView scrollEventThrottle={16}>
                 {searchData.map((search) => (
@@ -142,7 +140,7 @@ export const Upcoming = (props) => {
                     name={search.title}
                     score={search.rating}
                     imageUri={'https://image.tmdb.org/t/p/w500/' + search.image}
-                    released={date.toLocaleDateString(search.released)}
+                    released={search.released}
                   />
                 ))}
               </ScrollView>
@@ -182,6 +180,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontWeight: 'bold',
     marginLeft: 14,
+    color: 'white'
   },
   searchInputText: {
     fontSize: 16,

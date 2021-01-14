@@ -28,6 +28,7 @@ import Star from 'react-native-star-view';
 import axios from 'axios';
 
 import TVShows from '../../TVShows'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
 
@@ -49,24 +50,43 @@ export const SearchCard = (props) => {
           />
           <TouchableOpacity
             onPress={async () => {
-              const searchRes = axios.post(
-                'http://143.110.173.215:2005/api/' + props.routeTo,
-                {
-                  searchData: searchInput.value,
-                },
-              );
+              if (props.routeTo == "searchMovies") {
+                const searchRes = await axios.post(
+                  'http://143.110.173.215:2005/api/' + props.routeTo,
+                  {
+                    searchData: searchInput.value,
+                  },
+                );
 
-              props.setSearch(
-                searchRes.data.results.map((n) => ({
-                  id: n.id,
-                  title: n.title,
-                  rating: n.vote_average / 2,
-                  image: n.poster_path,
-                  released: n.release_date,
-                })),
-              );
-              setSearchInput({value: ''});
-            }}
+                props.setSearch(
+                  searchRes.data.results.map((n) => ({
+                    id: n.id,
+                    title: n.title,
+                    rating: n.vote_average / 2,
+                    image: n.poster_path,
+                    released: n.release_date.split("-"),
+                  })),
+                );
+                setSearchInput({ value: '' });
+              } else {
+                const searchRes = await axios.post(
+                  'http://143.110.173.215:2005/api/' + props.routeTo,
+                  {
+                    searchData: searchInput.value,
+                  },
+                );
+
+                props.setSearch(
+                  searchRes.data.results.map((n) => ({
+                    id: n.id,
+                    title: n.name,
+                    rating: n.vote_average / 2,
+                    image: n.poster_path,
+                    released: n.first_air_date.split('-'),
+                  })),
+                );
+                setSearchInput({value: ''});
+              }}}
             style={{
               height: 45,
               width: 50,

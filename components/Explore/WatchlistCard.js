@@ -54,7 +54,7 @@ export const WatchlistCard = (props) => {
             <View style={styles.wrapperStatus}>
               <Text style={styles.infoText}>Status:</Text>
               <Text style={styles.infoTextSecondary}>
-                {props.status + ' (' + props.year[0] + ')'}
+                {props.status}
               </Text>
             </View>
             <View style={styles.wrapperLength}>

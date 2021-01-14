@@ -23,6 +23,7 @@ import { TVShows } from './TVShows';
 import { ForgotPass } from './ForgotPass';
 import { ChangePass } from './ChangePass';
 import { Watchlist } from './Watchlist';
+import { WatchlistTV } from './WatchlistTV';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -36,6 +37,7 @@ function DrawerRoutes() {
       <Drawer.Screen name="Upcoming Movies" component={Upcoming} />
       <Drawer.Screen name="TV Shows" component={TVShows} />
       <Drawer.Screen name="Watchlist" component={Watchlist} />
+      <Drawer.Screen name="TV Watchlist" component={WatchlistTV} />
     </Drawer.Navigator>
   );
 }
